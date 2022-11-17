@@ -1,12 +1,3 @@
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        let result = 2 + 2;
-        assert_eq!(result, 4);
-    }
-}
-
 pub enum Color {
     RGB { red: u8, green: u8, blue: u8 },
     HSV { hue: u16, saturation: u8, value: u8 },
