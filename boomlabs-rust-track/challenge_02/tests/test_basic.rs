@@ -51,7 +51,6 @@ fn test_basic() {
         String::from("three"),
         String::from("four"),
     ]);
-    println!("{:?}", matrix1);
     assert_eq!(
         matrix1 * matrix2,
         String::from("oneoneoneone threethree twotwotwotwotwo fourfourfour")
