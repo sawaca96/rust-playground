@@ -1,49 +1,100 @@
+use std::ops::{Add, Mul};
+
 #[derive(Debug)]
 pub struct Matrix<T: Clone> {
-    // Fields you need
+    pub data: [T; 4],
 }
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Cell<T>(pub T);
 
+impl Add<Cell<String>> for Cell<i32> {
+    type Output = Cell<String>;
+
+    fn add(self, rhs: Cell<String>) -> Self::Output {
+        if self.0 >= 0 {
+            Cell(format!("{} {}", self.0, rhs.0))
+        } else {
+            Cell(format!(
+                "{} {}",
+                rhs.0.chars().rev().collect::<String>(),
+                self.0 * -1
+            ))
+        }
+    }
+}
+
+impl Mul<Cell<String>> for Cell<i32> {
+    type Output = Cell<String>;
+
+    fn mul(self, rhs: Cell<String>) -> Self::Output {
+        if self.0 >= 0 {
+            Cell(format!("{}", rhs.0.repeat(self.0.try_into().unwrap())))
+        } else {
+            Cell(format!(
+                "{}",
+                rhs.0
+                    .chars()
+                    .rev()
+                    .collect::<String>()
+                    .repeat((self.0 * -1).try_into().unwrap())
+            ))
+        }
+    }
+}
+
 impl<T: Clone> Matrix<T> {
-    /// Data is expected to be passed with a static array -- see below for examples of
-    /// construct. What might the elements be? We will only test with two types: String and i32.
-    ///
-    /// Expected to be passed in rows, from left to right. That is, if we pass as input a list
-    /// with elements: 1, 2, 3, 4, the constructed matrix is ​​expected:
-    ///
-    /// | 1 2 |
-    /// | 3 4 |
-    ///
-    /// Note that we pass as input some slice -- reference type. We do not expect the matrix to
-    /// holds a reference, clone your data to have ownership.
-    ///
     pub fn new(data: &[T; 4]) -> Matrix<T> {
-        todo!()
+        Matrix {
+            data: [
+                data[0].clone(),
+                data[1].clone(),
+                data[2].clone(),
+                data[3].clone(),
+            ],
+        }
     }
 
-    /// Returns a vector that contains all 4 elements of the matrix, arranged in rows,
-    /// left to right and top to bottom wrapped in `Cell`. That is, if the matrix looks like this:
-    ///
-    /// | 1 2 |
-    /// | 3 4 |
-    ///
-    /// then `.by_row` to return the elements in order: 1, 2, 3, 4
-    ///
     pub fn by_row(&self) -> Vec<Cell<T>> {
-        todo!()
+        let mut result = Vec::new();
+        for i in 0..self.data.len() {
+            result.push(Cell(self.data[i].clone()));
+        }
+        result
     }
 
-    /// Returns a vector that contains all 4 elements of the matrix, arranged by column,
-    /// from top to bottom and from left to right, Wrapped in `Cell`. That is, if the matrix looks like this:
-    ///
-    /// | 1 2 |
-    /// | 3 4 |
-    ///
-    /// then `.by_col` to return the elements in order: 1, 3, 2, 4
-    ///
     pub fn by_col(&self) -> Vec<Cell<T>> {
-        todo!()
+        let mut result = Vec::new();
+        for i in (0..self.data.len()).step_by(2) {
+            result.push(Cell(self.data[i].clone()));
+        }
+        for i in (1..self.data.len()).step_by(2) {
+            result.push(Cell(self.data[i].clone()));
+        }
+        result
+    }
+}
+
+impl Add<Matrix<String>> for Matrix<i32> {
+    type Output = Matrix<String>;
+
+    fn add(self, rhs: Matrix<String>) -> Self::Output {
+        let mut result = Vec::new();
+        for i in 0..self.data.len() {
+            result.push((Cell(self.data[i]) + Cell(rhs.data[i].clone())).0);
+        }
+        Matrix::new(&result.try_into().unwrap())
+    }
+}
+
+impl Mul<Matrix<String>> for Matrix<i32> {
+    type Output = String;
+
+    fn mul(self, rhs: Matrix<String>) -> Self::Output {
+        let mut result = Vec::new();
+        for i in 0..self.data.len() {
+            result.push((self.by_row()[i].clone() * rhs.by_col()[i].clone()).0);
+        }
+        result.join(" ")
     }
 }
