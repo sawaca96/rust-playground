@@ -1,6 +1,6 @@
 // Note: the project name should be "solution". If it doesn't say that, change it
 // on this line:
-use solution::*;
+use challenge_04::*;
 
 #[test]
 fn test_basic_1() {
