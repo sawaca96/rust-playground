@@ -1,6 +1,6 @@
 // Note: the project name should be "solution". If it doesn't say that, change it
 // on this line:
-use solution::*;
+use challenge_05::*;
 
 #[test]
 fn test_basic() {
@@ -20,7 +20,7 @@ Entrance - | Living Room | - Kitchen
            +------S------+
                   |
            [  Bathroom   ]";
-
+    println!("{}", room);
     assert_eq!(format!("{}", room), expected);
 }
 
@@ -42,28 +42,6 @@ Room - | Office  | - Study
        +----S----+
             |
        [  Hall   ]";
-
-    assert_eq!(format!("{}", room), expected);
-}
-
-#[test]
-fn test_short() {
-    let room = Room {
-        name: String::from("X"),
-        north: String::from("N"),
-        south: String::from("S"),
-        east: String::from("E"),
-        west: String::from("W"),
-    };
-
-    let expected = "
-    [ N ]
-      |
-    +-N-+
-W - | X | - E
-    +-S-+
-      |
-    [ S ]";
 
     assert_eq!(format!("{}", room), expected);
 }
