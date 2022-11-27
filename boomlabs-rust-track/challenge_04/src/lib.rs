@@ -1,5 +1,6 @@
 use std::{
     collections::{HashMap, HashSet, VecDeque},
+    fmt::Display,
     io::{self, BufRead},
 };
 
@@ -42,6 +43,17 @@ impl Direction {
             "east" => Some(Direction::East),
             "west" => Some(Direction::West),
             _ => None,
+        }
+    }
+}
+
+impl Display for Direction {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Direction::North => write!(f, "North"),
+            Direction::South => write!(f, "South"),
+            Direction::East => write!(f, "East"),
+            Direction::West => write!(f, "West"),
         }
     }
 }
@@ -333,12 +345,21 @@ impl Dungeon {
                     Direction::East,
                     Direction::West,
                 ] {
-                    if let Some(next_room) =
-                        self.get_next_room(last_room.name.as_str(), *direction)?
+                    if let Ok(Some(next_room)) =
+                        self.get_next_room(last_room.name.as_str(), *direction)
                     {
-                        let mut next_path = path.clone();
-                        next_path.push(next_room);
-                        queue.push_back(next_path);
+                        if let Ok(Some(before_room)) =
+                            self.get_next_room(next_room.name.as_str(), direction.opposite())
+                        {
+                            if last_room.name != before_room.name {
+                                continue;
+                            }
+                            let mut next_path = path.clone();
+                            next_path.push(next_room);
+                            queue.push_back(next_path);
+                        } else {
+                            println!("skip {} -> {}", path[path.len() - 2].name, last_room.name);
+                        }
                     }
                 }
             }

@@ -512,6 +512,10 @@ fn test_finding_an_indirect_path() {
             .find_path("Entrance", "Treasure Room")
             .unwrap()
             .unwrap();
+        println!(
+            "{}, {}, {}, {}",
+            path[0].name, path[1].name, path[2].name, path[3].name
+        );
 
         let mut path_iter = path.iter();
         let mut first = path_iter.next().unwrap();
