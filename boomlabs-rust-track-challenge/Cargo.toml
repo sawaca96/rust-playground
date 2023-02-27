@@ -1,5 +1,5 @@
 [package]
-name = "challenge_04"
+name = "boomlabs-rust-track-challenge"
 version = "0.1.0"
 edition = "2021"
 
