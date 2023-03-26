@@ -1,6 +1,6 @@
 // Note: the project name should be "solution". If it doesn't say that, change it
 // on this line:
-use boomlabs_rust_tack_challenge::challenge_01::*;
+use challenge_02::*;
 
 // For auxiliary purposes:
 fn string_cell_vec(s1: &str, s2: &str, s3: &str, s4: &str) -> Vec<Cell<String>> {
