@@ -27,19 +27,20 @@ pub fn run() {
         .arg(Arg::new("input").help("File to search").required(false))
         .get_matches();
 
-    let pattern = args.value_source("pattern").unwrap();
-    let re = Regex::new(pattern).unwrap();
+    // Get the pattern value from the command line arguments
+    let pattern = args.get_one::<String>("pattern").unwrap();
+    let default = String::from("1");
+    let input = args.get_one::<String>("input").unwrap_or(&default);
 
-    match args.value_of("input") {
-        Some(filename) => {
-            let file = File::open(filename).unwrap();
-            let reader = BufReader::new(file);
-            process_lines(reader, re);
-        }
-        None => {
-            let stdin = io::stdin();
-            let reader = stdin.lock();
-            process_lines(reader, re);
-        }
+    let re = Regex::new(&pattern).unwrap();
+
+    if input == "-" {
+        let stdin = io::stdin();
+        let reader = stdin.lock();
+        process_lines(reader, re);
+    } else {
+        let file = File::open("./src/ch02/".to_owned() + input).unwrap();
+        let reader = BufReader::new(file);
+        process_lines(reader, re);
     }
 }
