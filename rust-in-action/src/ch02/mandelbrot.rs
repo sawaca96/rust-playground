@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use num::complex::Complex;
 
 fn calculate_mandelbrot(

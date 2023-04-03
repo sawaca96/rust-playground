@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use rand::prelude::*;
 
 fn one_in(denominator: u32) -> bool {

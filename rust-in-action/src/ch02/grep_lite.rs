@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use clap::{Arg, Command};
 use regex::Regex;
 use std::fs::File;

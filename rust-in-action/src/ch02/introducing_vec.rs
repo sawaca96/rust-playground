@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 pub fn run() {
     let context_lines = 1;
     let target = "same";
